@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Data Extraction Tool</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h1>Data Extraction Tool</h1>
+    <div class="search-box">
+      <label for="start-date">Start Date:</label>
+      <input type="text" id="start-date" name="start-date" placeholder="MM/DD/YYYY">
+      <label for="end-date">End Date:</label>
+      <input type="text" id="end-date" name="end-date" placeholder="MM/DD/YYYY">
+      <label for="category">Category:</label>
+      <select id="category" name="category">
+        <option value="option1">Option 1</option>
+        <option value="option2">Option 2</option>
+        <option value="option3">Option 3</option>
+      </select>
+      <label for="location">Location:</label>
+      <select id="location" name="location">
+        <option value="option1">Option 1</option>
+        <option value="option2">Option 2</option>
+        <option value="option3">Option 3</option>
+      </select>
+      <button id="search-btn">Search</button>
+    </div>
+    <div class="table-box">
+      <table>
+        <thead>
+          <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Data 1</td>
+            <td>Data 2</td>
+            <td>Data 3</td>
+          </tr>
+          <tr>
+            <td>Data 4</td>
+            <td>Data 5</td>
+            <td>Data 6</td>
+          </tr>
+          <!-- Add more rows as needed -->
+        </tbody>
+      </table>
+    </div>
+    <div class="download-box">
+      <button id="download-btn">Download CSV</button>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2023 Data Extraction Tool</p>
+  </footer>
+</body>
+</html>
