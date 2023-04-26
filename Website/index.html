@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Data Extraction Tool</title>
   <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
 </head>
@@ -29,13 +30,6 @@
       <input type="text" id="start-date" name="start-date" placeholder="MM/DD/YYYY">
       <label for="end-date">End Date:</label>
       <input type="text" id="end-date" name="end-date" placeholder="MM/DD/YYYY">
-      <label for="category">Category:</label>
-
-      <select id="category" name="category">
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
-      </select>
 
       <label for="location">Location:</label>
 
@@ -51,36 +45,13 @@
 
     <div class="table-box">
       <table>
-        <thead>
-          <tr>
-            <th>Column 1</th>
-            <th>Column 2</th>
-            <th>Column 3</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Data 1</td>
-            <td>Data 2</td>
-            <td>Data 3</td>
-          </tr>
-          <tr>
-            <td>Data 4</td>
-            <td>Data 5</td>
-            <td>Data 6</td>
-          </tr>
-          <!-- Add more rows as needed -->
-        </tbody>
+        <canvas id="myChart"></canvas>
       </table>
     </div>
     <div class="download-box">
       <button id="download-btn">Download CSV</button>
     </div>
-    <div class="grid-container">
-      <div class="grid-item" >Content 1</div>
-      <div class="grid-item">Content 2</div>
-      <div class="grid-item">Content 3</div>
-    </div>
+
   </main>
   <footer>
     <p>&copy; 2023 Data Extraction Tool</p>
