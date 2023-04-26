@@ -10,17 +10,28 @@ const sensors = {
   };
   
 
-  const getAllSensorData = async () => {
-    try {
-      const sensorIds = await getAllSensorIds();
-      const sensorData = await getSensorData(sensorIds);
-      console.log(sensorData)
-      return sensorData;
-    } catch (error) {
-      console.error(error);
-      throw new Error("Failed to get sensor data");
-    }
-  };
+const getAllSensorData = async () => {
+try {
+    const sensorIds = await getAllSensorIds();
+    const sensorData = await getSensorData(sensorIds);
+    console.log(sensorData)
+    return sensorData;
+} catch (error) {
+    console.error(error);
+    throw new Error("Failed to get sensor data");
+}
+};
+
+async function getSensorData(sensorId) {
+try {
+    const url = `https://api.purpleair.com/v1/sensors/${sensorId}`;
+    const response = await fetch(url, { headers: headers });
+    const sensorData = await response.json();
+    return sensorData;
+} catch (error) {
+    console.error(error);
+}
+}
 
 async function getHistoricalData(sensorId, start="1weekago", end="now", interval="hourly") {
   const url = `https://api.purpleair.com/v1/sensors/${sensorId}/stats?from=${start}&to=${end}&interval=${interval}`;
