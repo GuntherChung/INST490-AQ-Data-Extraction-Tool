@@ -8,29 +8,24 @@ const sensors = {
     Oxon_Hill_HS: "104790#11.05"
     // add more sensors here as needed
   };
-  
 
-const getAllSensorData = async () => {
-try {
-    const sensorIds = await getAllSensorIds();
-    const sensorData = await getSensorData(sensorIds);
-    console.log(sensorData)
-    return sensorData;
-} catch (error) {
-    console.error(error);
-    throw new Error("Failed to get sensor data");
+async function getSensorData(sensorIds) {
+    try {
+      const promises = sensorIds.map((sensorId) => {
+        const url = `https://api.purpleair.com/v1/sensors/${sensorId}`;
+        return fetch(url, { headers: headers }).then((response) => response.json());
+      });
+      const sensorData = await Promise.all(promises);
+      return sensorData;
+    } catch (error) {
+      console.error(error);
+    }
 }
-};
 
-async function getSensorData(sensorId) {
-try {
-    const url = `https://api.purpleair.com/v1/sensors/${sensorId}`;
-    const response = await fetch(url, { headers: headers });
-    const sensorData = await response.json();
-    return sensorData;
-} catch (error) {
-    console.error(error);
-}
+async function getAllSensorData() {
+const sensorIds = Object.values(sensors);
+const sensorData = await getSensorData(sensorIds);
+return sensorData;
 }
 
 async function getHistoricalData(sensorId, start="1weekago", end="now", interval="hourly") {
@@ -52,23 +47,8 @@ async function getAllHistoricalData(start="1weekago", end="now", interval="hourl
 }
 
 // example usage
-const sensorId = "<your-sensor-id>"; // replace with your actual sensor ID
-getSensorData(sensorId).then((data) => {
-  console.log(data);
-}).catch((error) => {
-  console.error(error);
-});
-
-// example usage
 getAllSensorData().then((data) => {
-  console.log(data);
-}).catch((error) => {
-  console.error(error);
-});
-
-// example usage
-getAllHistoricalData().then((data) => {
-  console.log(data);
-}).catch((error) => {
-  console.error(error);
-});
+    console.log(data);
+  }).catch((error) => {
+    console.error(error);
+  });
