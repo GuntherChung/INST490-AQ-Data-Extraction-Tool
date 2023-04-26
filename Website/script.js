@@ -36,8 +36,7 @@ async function getHistoricalData(sensorId, start="1weekago", end="now", interval
 }
   
 
-async function getAllHistoricalData(start="1weekago", end="now", interval="hourly") {
-  const sensorIds = await getAllSensorIds();
+async function getAllHistoricalData(sensorIds, start="1weekago", end="now", interval="hourly") {
   const historicalData = {};
   for (const sensorId of sensorIds) {
     const data = await getHistoricalData(sensorId, start, end, interval);
@@ -52,3 +51,27 @@ getAllSensorData().then((data) => {
   }).catch((error) => {
     console.error(error);
   });
+
+// example usage for getSensorData
+const sensorids = Object.values(sensors);
+getSensorData(sensorids).then((data) => {
+  console.log(data);
+}).catch((error) => {
+  console.error(error);
+});
+
+// example usage for getHistoricalData
+const sensorId = sensors.Union_Bethel_AME;
+getHistoricalData(sensorId).then((data) => {
+  console.log(data);
+}).catch((error) => {
+  console.error(error);
+});
+
+// example usage for getAllHistoricalData
+const sensorids2 = Object.values(sensors);
+getAllHistoricalData(sensorids2).then((data) => {
+  console.log(data);
+}).catch((error) => {
+  console.error(error);
+});
