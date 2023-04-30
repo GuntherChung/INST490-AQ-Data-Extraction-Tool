@@ -146,14 +146,17 @@ async function loadData(chart) {
   chart.update();
 }
 
-// Example usage: generate data for the past week
-generateData("2022-04-19", "2022-04-25");
+function initializeChart() {
+  // Example usage: generate data for the past week
+  generateData("2022-04-19", "2022-04-25");
 
-// Create the chart
-const ctx = document.getElementById("myChart").getContext("2d");
-const myChart = new Chart(ctx, {
-  type: "line",
-  data: chartData,
-  options: {
-    scales: {}
-     
+  // Create the chart
+  const ctx = document.getElementById("myChart").getContext("2d");
+  const myChart = new Chart(ctx, {
+    type: "line",
+    data: chartData,
+    options: {
+      scales: {}
+    }
+  });
+}
