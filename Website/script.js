@@ -162,4 +162,7 @@ function initializeChart() {
   });
 }
 
-initializeChart()
+
+document.addEventListener("DOMContentLoaded", function() {
+  initializeChart();
+});
