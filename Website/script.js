@@ -1,3 +1,5 @@
+import fetch from 'node-fetch';
+
 const headers = { "X-API-Key": "C7AF49F7-C3F6-11ED-B6F4-42010A800007" }; // replace with your actual API key
 
 const sensors = {
@@ -8,6 +10,7 @@ const sensors = {
     Oxon_Hill_HS: "104790#11.05"
     // add more sensors here as needed
   };
+
 
 async function getSensorData(sensorIds) {
     try {
