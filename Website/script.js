@@ -155,5 +155,5 @@ const myChart = new Chart(ctx, {
   type: "line",
   data: chartData,
   options: {
-    scales: {
+    scales: {}
      
