@@ -118,6 +118,8 @@ function generateData(startDate, endDate) {
     chartData.labels.push(label);
   }
 
+
+
   // Generate y-axis data
   const sensorId = "133730#11.74"; // Change to desired sensor ID
   const data = historicalData[sensorId]["1weekago"];
@@ -135,6 +137,32 @@ function generateData(startDate, endDate) {
   }
 }
 
+/*function generateData(fetchedData, startDate, endDate) {
+  // Generate x-axis labels
+  const start = moment(startDate);
+  const end = moment(endDate);
+  const diff = end.diff(start, "days");
+  for (let i = 0; i <= diff; i++) {
+    const label = start.add(1, "day").format("YYYY-MM-DD");
+    chartData.labels.push(label);
+  }
+
+  // Generate y-axis data
+  const data = fetchedData;
+  let dataIndex = 0;
+  let total = 0;
+  let count = 0;
+  for (const label of chartData.labels) {
+    while (dataIndex < data.length && moment(data[dataIndex].datetime).isSameOrBefore(label, "day")) {
+      total += data[dataIndex]["pm2.5"];
+      count++;
+      dataIndex++;
+    }
+    const average = count > 0 ? total / count : null;
+    chartData.datasets[0].data.push(average);
+  }
+}*/
+
 async function loadData(chart) {
   // Load data from server using fetch or any other method
   const data = await fetchData();
@@ -151,6 +179,33 @@ function initializeChart() {
   // Example usage: generate data for the past week
   generateData("2022-04-19", "2022-04-25");
 
+  // Calculate the maximum y-axis value
+  const maxYValue = Math.max(...chartData.datasets[0].data) + 10;
+
+  // Create the chart
+  const ctx = document.getElementById("myChart").getContext("2d");
+  const myChart = new Chart(ctx, {
+    type: "line",
+    data: chartData,
+    options: {
+      scales: {
+        y: {
+          min: 0,
+          max: maxYValue
+        }
+      }
+    }
+  });
+}
+
+/*async function initializeChart() {
+  // Fetch historical data for the desired sensor ID
+  const sensorId = sensors.Union_Bethel_AME;
+  const fetchedData = await getHistoricalData(sensorId);
+
+  // Example usage: generate data for the past week
+  generateData(fetchedData.stats, "2022-04-19", "2022-04-25");
+
   // Create the chart
   const ctx = document.getElementById("myChart").getContext("2d");
   const myChart = new Chart(ctx, {
@@ -160,7 +215,7 @@ function initializeChart() {
       scales: {}
     }
   });
-}
+}*/
 
 
 document.addEventListener("DOMContentLoaded", function() {
