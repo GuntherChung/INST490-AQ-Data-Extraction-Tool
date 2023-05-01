@@ -99,7 +99,7 @@ const chartData = {
   labels: [], // x-axis labels will be generated dynamically
   datasets: [
     {
-      label: "PM2.5",
+      label: "Air Quality Measured in PM2.5",
       data: [], // y-axis data will be generated dynamically
       fill: false,
       borderColor: "rgb(75, 192, 192)",
