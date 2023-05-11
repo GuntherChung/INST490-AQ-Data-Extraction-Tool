@@ -198,24 +198,27 @@ function initializeChart() {
   });
 }
 
-/*async function initializeChart() {
-  // Fetch historical data for the desired sensor ID
-  const sensorId = sensors.Union_Bethel_AME;
-  const fetchedData = await getHistoricalData(sensorId);
+function convertToCSV(data) {
+  const csvRows = [];
+  const headers = Object.keys(data[0]);
 
-  // Example usage: generate data for the past week
-  generateData(fetchedData.stats, "2022-04-19", "2022-04-25");
+  csvRows.push(headers.join(','));
 
-  // Create the chart
-  const ctx = document.getElementById("myChart").getContext("2d");
-  const myChart = new Chart(ctx, {
-    type: "line",
-    data: chartData,
-    options: {
-      scales: {}
-    }
-  });
-}*/
+  for (const row of data) {
+    const values = headers.map(header => {
+      const cell = row[header];
+      if (typeof cell === 'object') {
+        return JSON.stringify(cell);
+      } else {
+        return cell;
+      }
+    });
+    csvRows.push(values.join(','));
+  }
+
+  return csvRows.join('\n');
+}
+
 
 
 document.addEventListener("DOMContentLoaded", function() {
