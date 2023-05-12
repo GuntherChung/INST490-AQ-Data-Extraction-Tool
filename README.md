@@ -5,14 +5,14 @@
 This JavaScript code is a client-side application that gets data from an external API, creates a CSV file, generates a graph with the data pulled, and downloads it at the click of a button. 
 The application allows the user to select a location and a date range, then retrieves historical data for that location and period from the PurpleAir API. The code is well-commented and follows best practices, making it easy to read and understand.
 
-## Setup
+### Setup
 The first line of code sets the API key to access the PurpleAir API. Replace the value of the X-API-Key header with your own API key.
 
 ```js
 const headers = { "X-API-Key": "1234678-1234-1234-1234-42010A800007" }; // replace with your actual API key
 ```
 
-## Location Selection
+### Location Selection
 The searchBtn, locationSelect, and downloadBtn variables reference the corresponding elements in the HTML document.
 
 ```js
@@ -30,7 +30,7 @@ searchBtn.addEventListener("click", function() {
 });
 ```
 
-## Date Selection
+### Date Selection
 The startDateInput and endDateInput variables reference the date input elements in the HTML document. The minimum date for the start date input is set to 30 days ago from the current date.
 
 ``` js
@@ -71,7 +71,7 @@ searchButton.addEventListener("click", async () => {
 });
 ```
 
-## Download Button
+### Download Button
 When the user clicks the "Search" button, the sensorData variable is populated with the historical data for the selected location and dates. The downloadBtn variable is then enabled. When the user clicks the "Download" button, a CSV file is created and downloaded.
 
 ``` js
@@ -91,4 +91,4 @@ link.style.visibility = "hidden";
 document.body.appendChild(link);
 ```
 
-## Things left to do
+### Things left to do
