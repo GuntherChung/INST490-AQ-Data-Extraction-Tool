@@ -165,7 +165,6 @@ for (const label of chartData.labels) {
   const average = count > 0 ? total / count : null;
   chartData.datasets[0].data.push(average);
 }
-}
 
 async function loadData(chart) {
 // Load data from server using fetch or any other method
