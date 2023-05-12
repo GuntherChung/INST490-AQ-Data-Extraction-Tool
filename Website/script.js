@@ -1,16 +1,18 @@
 const headers = { "X-API-Key": "C7AF49F7-C3F6-11ED-B6F4-42010A800007" }; // replace with your actual API key
 
-
 // ---- LOCATION --- //
 
 // get references to the DOM elements
 const searchBtn = document.getElementById("search-btn");
 const locationSelect = document.getElementById("location");
 
+// define selectedLocation as a global variable
+let selectedLocation;
+
 // add event listener to the search button
 searchBtn.addEventListener("click", function() {
-  // get the value of the selected location
-  const selectedLocation = locationSelect.value;
+  // get the value of the selected location and assign it to the global variable
+  selectedLocation = locationSelect.value;
 
   // do something with the selected location, such as assigning it to a variable
   console.log(selectedLocation);
@@ -59,116 +61,27 @@ searchButton.addEventListener("click", () => {
   // ...
 });
 
-
-async function getSensorData(sensor) {
-  const url = `https://api.purpleair.com/v1/sensors/${sensor}`;
+// ----- DATA ----- //
+const interval = "hourly"
+async function getHistoricalData(startDate, endDate) {
+  const url = `https://api.purpleair.com/v1/sensors/${selectedLocation}/stats?from=${startDate}&to=${endDate}&interval=${interval}`;
   const response = await fetch(url, { headers });
   const data = await response.json();
+  console.log(data)
   return data;
 }
 
-async function getAllSensorData(sensor) {
-  const sensorData = {};
-  for (const sensorId of sensor) {
-    const data = await getSensorData(sensor);
-    sensorData[sensorId] = data;
-  }
-  return sensorData;
-}
-
-async function getHistoricalData(sensor, start="1weekago", end="now", interval="hourly") {
-  const url = `https://api.purpleair.com/v1/sensors/${sensor}/stats?from=${start}&to=${end}&interval=${interval}`;
-  const response = await fetch(url, { headers });
-  const data = await response.json();
-  return data;
-}
-
-async function getAllHistoricalData(sensor, start="1weekago", end="now", interval="hourly") {
-  const historicalData = {};
-  for (const sensorId of sensor) {
-    const data = await getHistoricalData(sensorId, start, end, interval);
-    historicalData[sensorId] = data;
-  }
-  return historicalData;
-}
-
-const chartData = {
-  labels: [], // x-axis labels will be generated dynamically
-  datasets: [
-    {
-      label: "Air Quality Measured in PM2.5",
-      data: [], // y-axis data will be generated dynamically
-      fill: false,
-      borderColor: "rgb(75, 192, 192)",
-      tension: 0.1
-    }
-  ]
-};
-
-function generateData(startDate, endDate) {
-  // Generate x-axis labels
-  const start = moment(startDate);
-  const end = moment(endDate);
-  const diff = end.diff(start, "days");
-  for (let i = 0; i <= diff; i++) {
-    const label = start.add(1, "day").format("YYYY-MM-DD");
-    chartData.labels.push(label);
-  }
-
-
-
-  // Generate y-axis data
-  const sensorId = "133730#11.74"; // Change to desired sensor ID
-  const data = historicalData[sensorId]["1weekago"];
-  let dataIndex = 0;
-  let total = 0;
-  let count = 0;
-  for (const label of chartData.labels) {
-    while (dataIndex < data.length && moment(data[dataIndex].datetime).isSameOrBefore(label, "day")) {
-      total += data[dataIndex]["pm2.5"];
-      count++;
-      dataIndex++;
-    }
-    const average = count > 0 ? total / count : null;
-    chartData.datasets[0].data.push(average);
-  }
-}
-
-async function loadData(chart) {
-  // Load data from server using fetch or any other method
-  const data = await fetchData();
-
-  // Push new labels and data into the chart arrays
-  chart.data.labels.push(data.label);
-  chart.data.datasets[0].data.push(data.value);
-
-  // Redraw the chart with new data
-  chart.update();
-}
-
-function initializeChart() {
-  // Example usage: generate data for the past week
-  generateData("2022-04-19", "2022-04-25");
-
-  // Calculate the maximum y-axis value
-  const maxYValue = Math.max(...chartData.datasets[0].data) + 10;
-
-  // Create the chart
-  const ctx = document.getElementById("myChart").getContext("2d");
-  const myChart = new Chart(ctx, {
-    type: "line",
-    data: chartData,
-    options: {
-      scales: {
-        y: {
-          min: 0,
-          max: maxYValue
-        }
-      }
-    }
-  });
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-  initializeChart();
-}); 
+// ---- DOWNLOAD ---- //
+const downloadBtn = document.getElementById("download-btn");
+downloadBtn.addEventListener("click", () => {
+  const csv = "Timestamp,PM2.5\n" + data.results.map(point => `${point.last_seen},${point.pm25}`).join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", "data.csv");
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+});
