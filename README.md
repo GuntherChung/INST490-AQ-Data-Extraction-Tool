@@ -67,7 +67,7 @@ searchBtn.addEventListener("click", async function() {
   sensorData = await getHistoricalData(startDateInput.value, endDateInput.value);
   downloadBtn.disabled = false;
 });
-|--------------------------------------------------------------------------------|
+
 downloadBtn.addEventListener("click", function() {
 const csv = createCsv(sensorData);
 const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -77,6 +77,5 @@ link.setAttribute("href", url);
 link.setAttribute("download", "data.csv");
 link.style.visibility = "hidden";
 document.body.appendChild(link);
-|--------------------------------------------------------------------------------| 
 
 ## Things left to do
