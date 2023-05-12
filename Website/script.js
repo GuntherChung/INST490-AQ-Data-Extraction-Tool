@@ -7,7 +7,7 @@ const searchBtn = document.getElementById("search-btn");
 const locationSelect = document.getElementById("location");
 const downloadBtn = document.getElementById("download-btn");
 
-// define selectedLocation as a global variable
+// define certain variables as a global variable
 let selectedLocation;
 let sensorData;
 let startDate;

@@ -90,5 +90,22 @@ link.setAttribute("download", "data.csv");
 link.style.visibility = "hidden";
 document.body.appendChild(link);
 ```
-
+-------------------------------------
 ### Things left to do
+Our initial goals were
+* let the user input values for 
+    * start date
+    * end date
+    * and select one location for the sensor
+
+After these steps are completed, a number of things were supposed to happen
+1. Pull the data 
+2. Sort the data
+3. visualize the data
+4. let the user download the sorted data
+
+While we were eger to get all of these features done by the end of our project time frame, *we were not able to do steps 2 and 3*, and in result * step4 * was not useful. 
+
+#### Future teams
+The next steps would be to continue to *work on perfecting steps 2 and 3*.
+Once these steps are completed, then *step 4* would work in a result of *step 2 working*.
