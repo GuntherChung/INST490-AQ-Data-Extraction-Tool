@@ -5,9 +5,13 @@ const headers = { "X-API-Key": "C7AF49F7-C3F6-11ED-B6F4-42010A800007" }; // repl
 // get references to the DOM elements
 const searchBtn = document.getElementById("search-btn");
 const locationSelect = document.getElementById("location");
+const downloadBtn = document.getElementById("download-btn");
 
 // define selectedLocation as a global variable
 let selectedLocation;
+let sensorData;
+let startDate;
+let endDate;
 
 // add event listener to the search button
 searchBtn.addEventListener("click", function() {
@@ -63,6 +67,54 @@ searchButton.addEventListener("click", async () => {
   // do something with the data
 });
 
+// add event listener to the search button
+searchBtn.addEventListener("click", async function() {
+  // get the value of the selected location and assign it to the global variable
+  selectedLocation = locationSelect.value;
+
+  // get the historical data for the selected location and dates
+  sensorData = await getHistoricalData(startDateInput.value, endDateInput.value);
+
+  // enable the download button
+  downloadBtn.disabled = false;
+});
+
+// add event listener to the download button
+downloadBtn.addEventListener("click", function() {
+  // create a CSV file and download it
+  const csv = createCsv(sensorData);
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(blob);
+  link.setAttribute("href", url);
+  link.setAttribute("download", "data.csv");
+  link.style.visibility = "hidden";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+});
+
+// ------ HELPER FUNCTIONS ---- //
+
+// create a CSV string from the sensor data
+function createCsv(sensorData) {
+  // create a header row with the column names
+  const header = "timestamp,pm2.5,temperature,humidity\n";
+
+  // create a row for each data point
+  const rows = sensorData.data.map(dataPoint => {
+    const timestamp = new Date(dataPoint[0]).toLocaleString();
+    const pm25 = dataPoint[1].toFixed(2);
+    const temperature = dataPoint[2].toFixed(2);
+    const humidity = dataPoint[3].toFixed(2);
+    return `${timestamp},${pm25},${temperature},${humidity}`;
+  });
+
+  // concatenate the header and rows into a single CSV string
+  return header + rows.join("\n");
+}
+
 // ----- DATA ----- //
 const interval = "hourly"
 async function getHistoricalData(startDate, endDate) {
@@ -107,7 +159,7 @@ datasets: [
 ]
 };
 
-/*function generateData(startDate, endDate) {
+function generateData(startDate, endDate) {
 // Generate x-axis labels
 const start = moment(startDate);
 const end = moment(endDate);
@@ -115,40 +167,7 @@ const diff = end.diff(start, "days");
 for (let i = 0; i <= diff; i++) {
   const label = start.add(1, "day").format("YYYY-MM-DD");
   chartData.labels.push(label);
-}*/
-
-async function generateData(startDate, endDate) {
-  // Generate x-axis labels
-  const start = moment(startDate);
-  const end = moment(endDate);
-  const diff = end.diff(start, "days");
-  for (let i = 0; i <= diff; i++) {
-    const label = start.add(1, "day").format("YYYY-MM-DD");
-    chartData.labels.push(label);
-  }
-
-  // Generate y-axis data
-  const sensorId = selectedLocation; // Use the selected sensor ID
-  const data = await getHistoricalData(startDate, endDate); // Get the historical data for the selected date range
-  const pm25Data = data.map(d => ({datetime: moment(d.avg_ts).format("YYYY-MM-DD"), "pm2.5": d.avg_pm2_5})); // Extract the pm2.5 data
-  let dataIndex = 0;
-  let total = 0;
-  let count = 0;
-  for (const label of chartData.labels) {
-    while (dataIndex < pm25Data.length && moment(pm25Data[dataIndex].datetime).isSameOrBefore(label, "day")) {
-      total += pm25Data[dataIndex]["pm2.5"];
-      count++;
-      dataIndex++;
-    }
-    chartData.datasets[0].data.push(total / count);
-    total = 0;
-    count = 0;
-  }
-
-  // Update the chart
-  myChart.update();
 }
-
 
 // Generate y-axis data
 const sensorId = "133730#11.74"; // Change to desired sensor ID
@@ -164,6 +183,7 @@ for (const label of chartData.labels) {
   }
   const average = count > 0 ? total / count : null;
   chartData.datasets[0].data.push(average);
+}
 }
 
 async function loadData(chart) {
