@@ -109,3 +109,22 @@ While we were eger to get all of these features done by the end of our project t
 #### Future teams
 The next steps would be to continue to *work on perfecting steps 2 and 3*.
 Once these steps are completed, then *step 4* would work in a result of *step 2 working*.
+
+#### General framework on what to do:
+1. Manipulate or Change the end point entirely.
+    * There is more than one endpoint from PurpleAir that can be used to retrieve historical data. Documentation can be found [here](https://api.purpleair.com/#api-sensors-get-sensor-history-csv). Also, by manipulating the parameters, you can get different results.
+
+2. Sort the data.
+    * The goal is to sort the data into lists that can be fed into the chart.js variable on the website. This Chart.js variable was not within the scope of the project, although can help anyone who is not familiar with data science methods to understand the data to some extent, which is why we added it.
+    * If this step is complete, parseing through the data and extracting the time series data, you will then have the properly formatted data to continue working on other sections. 
+    * Please reference the [Jupyter Notebook](./Data_testing/Understanding_api.ipynb) for the work we did towards the end of the project term. We got close to doing this ourselves, although ran out of time. Furthermore, after completing this, the challenge would be to implement it into the [JavaScript](./Website/script.js). *Good luck!*  
+
+3. Visualize it.
+    * After the data is sorted into two lists, 
+        * one for the times that data was recorded, 
+        * and the other for the actual sensor metrics, 
+    you should then be able to feed it into chart.js to visualize it.
+
+4. Download it
+    * Once the steps above are completed, then the data should be ready to download.
+    * Format it into a CSV and allow the download button to initiate the download process. 
