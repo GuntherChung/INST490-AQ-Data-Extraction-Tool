@@ -26,16 +26,16 @@ searchBtn.addEventListener("click", function() {
 ```
 ## Date Selection
 The startDateInput and endDateInput variables reference the date input elements in the HTML document. The minimum date for the start date input is set to 30 days ago from the current date.
-
+``` js
 const startDateInput = document.getElementById("start-date");
 const endDateInput = document.getElementById("end-date");
 
 const minStartDate = new Date();
 minStartDate.setDate(today.getDate() - 30);
 const minStartDateTimestamp = minStartDate.getTime();
-
+```
 When the user clicks the "Search" button, the start and end dates are validated to ensure they are valid and within the allowed range.
-
+```js
 searchButton.addEventListener("click", async () => {
   const startDate = moment(startDateInput.value, "MM/DD/YYYY");
   const endDate = moment(endDateInput.value, "MM/DD/YYYY");
@@ -60,10 +60,10 @@ searchButton.addEventListener("click", async () => {
 
   const sensorData = await getHistoricalData(startDate.toISOString(), endDate.toISOString());
 });
-
+```
 ## Download Button
 When the user clicks the "Search" button, the sensorData variable is populated with the historical data for the selected location and dates. The downloadBtn variable is then enabled. When the user clicks the "Download" button, a CSV file is created and downloaded.
-
+``` js
 searchBtn.addEventListener("click", async function() {
   sensorData = await getHistoricalData(startDateInput.value, endDateInput.value);
   downloadBtn.disabled = false;
@@ -78,5 +78,5 @@ link.setAttribute("href", url);
 link.setAttribute("download", "data.csv");
 link.style.visibility = "hidden";
 document.body.appendChild(link);
-
+```
 ## Things left to do
