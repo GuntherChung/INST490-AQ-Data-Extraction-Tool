@@ -11,7 +11,7 @@ The first line of code sets the API key to access the PurpleAir API. Replace the
 ```js
 const headers = { "X-API-Key": "1234678-1234-1234-1234-42010A800007" }; // replace with your actual API key
 ```
-You can obtain a key by referencing this [forum](https://community.purpleair.com/t/creating-api-keys/3951), or reaching out the purple air directly with this email: contact@purpleair.com
+You can obtain a key by referencing this [forum](https://community.purpleair.com/t/creating-api-keys/3951), or by reaching out the PurpleAir directly with this email: contact@purpleair.com
 ### Location Selection
 The searchBtn, locationSelect, and downloadBtn variables reference the corresponding elements in the HTML document.
 
