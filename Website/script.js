@@ -1,226 +1,174 @@
 const headers = { "X-API-Key": "C7AF49F7-C3F6-11ED-B6F4-42010A800007" }; // replace with your actual API key
 
-const sensors = {
-    Union_Bethel_AME: "133730#11.74", 
-    William_S_Schmidt: "134488#11.74",
-    PGCPS_Schmidt_CenterBldg: "102898#11",
-    Surratsville_HS: "102852#11.05",
-    Oxon_Hill_HS: "104790#11.05"
-    // add more sensors here as needed
-  };
+// ---- LOCATION --- //
 
+// get references to the DOM elements
+const searchBtn = document.getElementById("search-btn");
+const locationSelect = document.getElementById("location");
 
-async function getSensorData(sensorIds) {
-    try {
-      const promises = sensorIds.map((sensorId) => {
-        const url = `https://api.purpleair.com/v1/sensors/${sensorId}`;
-        return fetch(url, { headers: headers }).then((response) => response.json());
-      });
-      const sensorData = await Promise.all(promises);
-      return sensorData;
-    } catch (error) {
-      console.error(error);
-    }
-}
+// define selectedLocation as a global variable
+let selectedLocation;
 
-async function getAllSensorData() {
-const sensorIds = Object.values(sensors);
-const sensorData = await getSensorData(sensorIds);
-return sensorData;
-}
+// add event listener to the search button
+searchBtn.addEventListener("click", function() {
+  // get the value of the selected location and assign it to the global variable
+  selectedLocation = locationSelect.value;
 
-async function getHistoricalData(sensorId, start="1weekago", end="now", interval="hourly") {
-  const url = `https://api.purpleair.com/v1/sensors/${sensorId}/stats?from=${start}&to=${end}&interval=${interval}`;
+  // do something with the selected location, such as assigning it to a variable
+  console.log(selectedLocation);
+});
+
+// ------ DATE FIELDS ---- //
+
+// Get the input elements
+const startDateInput = document.getElementById("start-date");
+const endDateInput = document.getElementById("end-date");
+
+// Get today's date
+const today = new Date();
+const todayTimestamp = today.getTime();
+
+// Set the minimum date for start date input
+const minStartDate = new Date();
+minStartDate.setDate(today.getDate() - 30);
+const minStartDateTimestamp = minStartDate.getTime();
+
+// Add an event listener to the search button to validate the dates and perform the search
+const searchButton = document.getElementById("search-btn");
+searchButton.addEventListener("click", async () => {
+  const startDate = moment(startDateInput.value, "MM/DD/YYYY");
+  const endDate = moment(endDateInput.value, "MM/DD/YYYY");
+
+  if (!startDate.isValid() || !endDate.isValid()) {
+    alert("Please enter valid dates in the format MM/DD/YYYY");
+    return;
+  }
+
+  const startDateTimestamp = startDate.toDate().getTime();
+  const endDateTimestamp = endDate.toDate().getTime();
+
+  if (startDateTimestamp < minStartDateTimestamp) {
+    alert("Start date cannot be older than 30 days from today");
+    return;
+  }
+
+  if (endDateTimestamp < startDateTimestamp) {
+    alert("End date cannot be before the start date");
+    return;
+  }
+
+  // get the historical data for the selected location and dates
+  const sensorData = await getHistoricalData(startDate.toISOString(), endDate.toISOString());
+
+  // do something with the data
+});
+
+// ----- DATA ----- //
+const interval = "hourly"
+async function getHistoricalData(startDate, endDate) {
+  const url = `https://api.purpleair.com/v1/sensors/${selectedLocation}/stats?from=${startDate}&to=${endDate}&interval=${interval}`;
+  console.log(url)
   const response = await fetch(url, { headers });
   const data = await response.json();
+  console.log(data)
   return data;
 }
-  
 
-async function getAllHistoricalData(sensorIds, start="1weekago", end="now", interval="hourly") {
-  const historicalData = {};
-  for (const sensorId of sensorIds) {
-    const data = await getHistoricalData(sensorId, start, end, interval);
-    historicalData[sensorId] = data;
-  }
-  return historicalData;
-}
+// ---- Chart work ----- // 
 
-// example usage
-getAllSensorData().then((data) => {
-    console.log(data);
-  }).catch((error) => {
-    console.error(error);
-  });
-
-// example usage for getSensorData
-const sensorids = Object.values(sensors);
-getSensorData(sensorids).then((data) => {
-  console.log(data);
-}).catch((error) => {
-  console.error(error);
-});
-
-// example usage for getHistoricalData
-const sensorId = sensors.Union_Bethel_AME;
-getHistoricalData(sensorId).then((data) => {
-  console.log(data);
-}).catch((error) => {
-  console.error(error);
-});
-
-// example usage for getAllHistoricalData
-const sensorids2 = Object.values(sensors);
-getAllHistoricalData(sensorids2).then((data) => {
-  console.log(data);
-}).catch((error) => {
-  console.error(error);
-});
-// ------------Graph----------------- //
 const historicalData = {
-  "133730#11.74": {
-    "1weekago": [
-      {"datetime": "2022-04-16T00:00:00Z", "pm2.5": 5},
-      {"datetime": "2022-04-17T00:00:00Z", "pm2.5": 6},
-      {"datetime": "2022-04-18T00:00:00Z", "pm2.5": 4},
-      {"datetime": "2022-04-19T00:00:00Z", "pm2.5": 8},
-      {"datetime": "2022-04-20T00:00:00Z", "pm2.5": 9},
-      {"datetime": "2022-04-21T00:00:00Z", "pm2.5": 11},
-      {"datetime": "2022-04-22T00:00:00Z", "pm2.5": 10},
-      {"datetime": "2022-04-23T00:00:00Z", "pm2.5": 7},
-      {"datetime": "2022-04-24T00:00:00Z", "pm2.5": 6},
-      {"datetime": "2022-04-25T00:00:00Z", "pm2.5": 4}
-    ]
-  }
-  // add more historical data here as needed
+"133730#11.74": {
+  "1weekago": [
+    {"datetime": "2022-04-16T00:00:00Z", "pm2.5": 5},
+    {"datetime": "2022-04-17T00:00:00Z", "pm2.5": 6},
+    {"datetime": "2022-04-18T00:00:00Z", "pm2.5": 4},
+    {"datetime": "2022-04-19T00:00:00Z", "pm2.5": 8},
+    {"datetime": "2022-04-20T00:00:00Z", "pm2.5": 9},
+    {"datetime": "2022-04-21T00:00:00Z", "pm2.5": 11},
+    {"datetime": "2022-04-22T00:00:00Z", "pm2.5": 10},
+    {"datetime": "2022-04-23T00:00:00Z", "pm2.5": 7},
+    {"datetime": "2022-04-24T00:00:00Z", "pm2.5": 6},
+    {"datetime": "2022-04-25T00:00:00Z", "pm2.5": 4}
+  ]
+}
+// add more historical data here as needed
 };
 
 const chartData = {
-  labels: [], // x-axis labels will be generated dynamically
-  datasets: [
-    {
-      label: "Air Quality Measured in PM2.5",
-      data: [], // y-axis data will be generated dynamically
-      fill: false,
-      borderColor: "rgb(75, 192, 192)",
-      tension: 0.1
-    }
-  ]
+labels: [], // x-axis labels will be generated dynamically
+datasets: [
+  {
+    label: "Air Quality Measured in PM2.5",
+    data: [], // y-axis data will be generated dynamically
+    fill: false,
+    borderColor: "rgb(75, 192, 192)",
+    tension: 0.1
+  }
+]
 };
 
 function generateData(startDate, endDate) {
-  // Generate x-axis labels
-  const start = moment(startDate);
-  const end = moment(endDate);
-  const diff = end.diff(start, "days");
-  for (let i = 0; i <= diff; i++) {
-    const label = start.add(1, "day").format("YYYY-MM-DD");
-    chartData.labels.push(label);
-  }
-
-
-
-  // Generate y-axis data
-  const sensorId = "133730#11.74"; // Change to desired sensor ID
-  const data = historicalData[sensorId]["1weekago"];
-  let dataIndex = 0;
-  let total = 0;
-  let count = 0;
-  for (const label of chartData.labels) {
-    while (dataIndex < data.length && moment(data[dataIndex].datetime).isSameOrBefore(label, "day")) {
-      total += data[dataIndex]["pm2.5"];
-      count++;
-      dataIndex++;
-    }
-    const average = count > 0 ? total / count : null;
-    chartData.datasets[0].data.push(average);
-  }
+// Generate x-axis labels
+const start = moment(startDate);
+const end = moment(endDate);
+const diff = end.diff(start, "days");
+for (let i = 0; i <= diff; i++) {
+  const label = start.add(1, "day").format("YYYY-MM-DD");
+  chartData.labels.push(label);
 }
 
-/*function generateData(fetchedData, startDate, endDate) {
-  // Generate x-axis labels
-  const start = moment(startDate);
-  const end = moment(endDate);
-  const diff = end.diff(start, "days");
-  for (let i = 0; i <= diff; i++) {
-    const label = start.add(1, "day").format("YYYY-MM-DD");
-    chartData.labels.push(label);
+// Generate y-axis data
+const sensorId = "133730#11.74"; // Change to desired sensor ID
+const data = historicalData[sensorId]["1weekago"];
+let dataIndex = 0;
+let total = 0;
+let count = 0;
+for (const label of chartData.labels) {
+  while (dataIndex < data.length && moment(data[dataIndex].datetime).isSameOrBefore(label, "day")) {
+    total += data[dataIndex]["pm2.5"];
+    count++;
+    dataIndex++;
   }
-
-  // Generate y-axis data
-  const data = fetchedData;
-  let dataIndex = 0;
-  let total = 0;
-  let count = 0;
-  for (const label of chartData.labels) {
-    while (dataIndex < data.length && moment(data[dataIndex].datetime).isSameOrBefore(label, "day")) {
-      total += data[dataIndex]["pm2.5"];
-      count++;
-      dataIndex++;
-    }
-    const average = count > 0 ? total / count : null;
-    chartData.datasets[0].data.push(average);
-  }
-}*/
+  const average = count > 0 ? total / count : null;
+  chartData.datasets[0].data.push(average);
+}
+}
 
 async function loadData(chart) {
-  // Load data from server using fetch or any other method
-  const data = await fetchData();
+// Load data from server using fetch or any other method
+const data = await fetchData();
 
-  // Push new labels and data into the chart arrays
-  chart.data.labels.push(data.label);
-  chart.data.datasets[0].data.push(data.value);
+// Push new labels and data into the chart arrays
+chart.data.labels.push(data.label);
+chart.data.datasets[0].data.push(data.value);
 
-  // Redraw the chart with new data
-  chart.update();
+// Redraw the chart with new data
+chart.update();
 }
 
 function initializeChart() {
-  // Example usage: generate data for the past week
-  generateData("2022-04-19", "2022-04-25");
+// Example usage: generate data for the past week
+generateData("2022-04-19", "2022-04-25");
 
-  // Calculate the maximum y-axis value
-  const maxYValue = Math.max(...chartData.datasets[0].data) + 10;
+// Calculate the maximum y-axis value
+const maxYValue = Math.max(...chartData.datasets[0].data) + 10;
 
-  // Create the chart
-  const ctx = document.getElementById("myChart").getContext("2d");
-  const myChart = new Chart(ctx, {
-    type: "line",
-    data: chartData,
-    options: {
-      scales: {
-        y: {
-          min: 0,
-          max: maxYValue
-        }
+// Create the chart
+const ctx = document.getElementById("myChart").getContext("2d");
+const myChart = new Chart(ctx, {
+  type: "line",
+  data: chartData,
+  options: {
+    scales: {
+      y: {
+        min: 0,
+        max: maxYValue
       }
     }
-  });
-}
-
-function convertToCSV(data) {
-  const csvRows = [];
-  const headers = Object.keys(data[0]);
-
-  csvRows.push(headers.join(','));
-
-  for (const row of data) {
-    const values = headers.map(header => {
-      const cell = row[header];
-      if (typeof cell === 'object') {
-        return JSON.stringify(cell);
-      } else {
-        return cell;
-      }
-    });
-    csvRows.push(values.join(','));
   }
-
-  return csvRows.join('\n');
+});
 }
-
-
 
 document.addEventListener("DOMContentLoaded", function() {
-  initializeChart();
+initializeChart();
 }); 
