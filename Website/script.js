@@ -35,7 +35,7 @@ const minStartDateTimestamp = minStartDate.getTime();
 
 // Add an event listener to the search button to validate the dates and perform the search
 const searchButton = document.getElementById("search-btn");
-searchButton.addEventListener("click", () => {
+searchButton.addEventListener("click", async () => {
   const startDate = moment(startDateInput.value, "MM/DD/YYYY");
   const endDate = moment(endDateInput.value, "MM/DD/YYYY");
 
@@ -57,31 +57,118 @@ searchButton.addEventListener("click", () => {
     return;
   }
 
-  // Perform the search
-  // ...
+  // get the historical data for the selected location and dates
+  const sensorData = await getHistoricalData(startDate.toISOString(), endDate.toISOString());
+
+  // do something with the data
 });
 
 // ----- DATA ----- //
 const interval = "hourly"
 async function getHistoricalData(startDate, endDate) {
   const url = `https://api.purpleair.com/v1/sensors/${selectedLocation}/stats?from=${startDate}&to=${endDate}&interval=${interval}`;
+  console.log(url)
   const response = await fetch(url, { headers });
   const data = await response.json();
   console.log(data)
   return data;
 }
 
-// ---- DOWNLOAD ---- //
-const downloadBtn = document.getElementById("download-btn");
-downloadBtn.addEventListener("click", () => {
-  const csv = "Timestamp,PM2.5\n" + data.results.map(point => `${point.last_seen},${point.pm25}`).join("\n");
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.setAttribute("href", url);
-  link.setAttribute("download", "data.csv");
-  link.style.display = "none";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+// ---- Chart work ----- // 
+
+const historicalData = {
+"133730#11.74": {
+  "1weekago": [
+    {"datetime": "2022-04-16T00:00:00Z", "pm2.5": 5},
+    {"datetime": "2022-04-17T00:00:00Z", "pm2.5": 6},
+    {"datetime": "2022-04-18T00:00:00Z", "pm2.5": 4},
+    {"datetime": "2022-04-19T00:00:00Z", "pm2.5": 8},
+    {"datetime": "2022-04-20T00:00:00Z", "pm2.5": 9},
+    {"datetime": "2022-04-21T00:00:00Z", "pm2.5": 11},
+    {"datetime": "2022-04-22T00:00:00Z", "pm2.5": 10},
+    {"datetime": "2022-04-23T00:00:00Z", "pm2.5": 7},
+    {"datetime": "2022-04-24T00:00:00Z", "pm2.5": 6},
+    {"datetime": "2022-04-25T00:00:00Z", "pm2.5": 4}
+  ]
+}
+// add more historical data here as needed
+};
+
+const chartData = {
+labels: [], // x-axis labels will be generated dynamically
+datasets: [
+  {
+    label: "Air Quality Measured in PM2.5",
+    data: [], // y-axis data will be generated dynamically
+    fill: false,
+    borderColor: "rgb(75, 192, 192)",
+    tension: 0.1
+  }
+]
+};
+
+function generateData(startDate, endDate) {
+// Generate x-axis labels
+const start = moment(startDate);
+const end = moment(endDate);
+const diff = end.diff(start, "days");
+for (let i = 0; i <= diff; i++) {
+  const label = start.add(1, "day").format("YYYY-MM-DD");
+  chartData.labels.push(label);
+}
+
+// Generate y-axis data
+const sensorId = "133730#11.74"; // Change to desired sensor ID
+const data = historicalData[sensorId]["1weekago"];
+let dataIndex = 0;
+let total = 0;
+let count = 0;
+for (const label of chartData.labels) {
+  while (dataIndex < data.length && moment(data[dataIndex].datetime).isSameOrBefore(label, "day")) {
+    total += data[dataIndex]["pm2.5"];
+    count++;
+    dataIndex++;
+  }
+  const average = count > 0 ? total / count : null;
+  chartData.datasets[0].data.push(average);
+}
+}
+
+async function loadData(chart) {
+// Load data from server using fetch or any other method
+const data = await fetchData();
+
+// Push new labels and data into the chart arrays
+chart.data.labels.push(data.label);
+chart.data.datasets[0].data.push(data.value);
+
+// Redraw the chart with new data
+chart.update();
+}
+
+function initializeChart() {
+// Example usage: generate data for the past week
+generateData("2022-04-19", "2022-04-25");
+
+// Calculate the maximum y-axis value
+const maxYValue = Math.max(...chartData.datasets[0].data) + 10;
+
+// Create the chart
+const ctx = document.getElementById("myChart").getContext("2d");
+const myChart = new Chart(ctx, {
+  type: "line",
+  data: chartData,
+  options: {
+    scales: {
+      y: {
+        min: 0,
+        max: maxYValue
+      }
+    }
+  }
 });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+initializeChart();
+}); 
