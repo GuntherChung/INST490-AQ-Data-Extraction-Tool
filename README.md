@@ -31,7 +31,7 @@ searchBtn.addEventListener("click", function() {
 ```
 
 ### Date Selection
-The startDateInput and endDateInput variables reference the date input elements in the HTML document. The minimum date for the start date input is set to 30 days ago from the current date.
+The startDateInput and endDateInput variables reference the date input elements in the HTML document. The minimum date for the start date input is set to 30 days ago from the current date. 30 days is the maximum that PurpleAir allows for historical data to be requested for, which is why we found that adding the error message to display to be very helpful.  
 
 ``` js
 const startDateInput = document.getElementById("start-date");
