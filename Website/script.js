@@ -107,7 +107,7 @@ datasets: [
 ]
 };
 
-function generateData(startDate, endDate) {
+/*function generateData(startDate, endDate) {
 // Generate x-axis labels
 const start = moment(startDate);
 const end = moment(endDate);
@@ -115,7 +115,40 @@ const diff = end.diff(start, "days");
 for (let i = 0; i <= diff; i++) {
   const label = start.add(1, "day").format("YYYY-MM-DD");
   chartData.labels.push(label);
+}*/
+
+async function generateData(startDate, endDate) {
+  // Generate x-axis labels
+  const start = moment(startDate);
+  const end = moment(endDate);
+  const diff = end.diff(start, "days");
+  for (let i = 0; i <= diff; i++) {
+    const label = start.add(1, "day").format("YYYY-MM-DD");
+    chartData.labels.push(label);
+  }
+
+  // Generate y-axis data
+  const sensorId = selectedLocation; // Use the selected sensor ID
+  const data = await getHistoricalData(startDate, endDate); // Get the historical data for the selected date range
+  const pm25Data = data.map(d => ({datetime: moment(d.avg_ts).format("YYYY-MM-DD"), "pm2.5": d.avg_pm2_5})); // Extract the pm2.5 data
+  let dataIndex = 0;
+  let total = 0;
+  let count = 0;
+  for (const label of chartData.labels) {
+    while (dataIndex < pm25Data.length && moment(pm25Data[dataIndex].datetime).isSameOrBefore(label, "day")) {
+      total += pm25Data[dataIndex]["pm2.5"];
+      count++;
+      dataIndex++;
+    }
+    chartData.datasets[0].data.push(total / count);
+    total = 0;
+    count = 0;
+  }
+
+  // Update the chart
+  myChart.update();
 }
+
 
 // Generate y-axis data
 const sensorId = "133730#11.74"; // Change to desired sensor ID
