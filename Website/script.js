@@ -99,6 +99,9 @@ downloadBtn.addEventListener("click", function() {
 
 // create a CSV string from the sensor data
 function createCsv(sensorData) {
+  if (!sensorData || !sensorData.data) {
+    return ""; // or handle the error in some other way
+  }
   // create a header row with the column names
   const header = "timestamp,pm2.5,temperature,humidity\n";
 
