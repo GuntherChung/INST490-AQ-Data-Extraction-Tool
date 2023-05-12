@@ -1,12 +1,15 @@
+/* Import the Roboto font from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
 
 /* Global styles */
+/* Set the default font size and family for the page, and enable smooth scrolling */
 html {
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
   scroll-behavior: smooth;
 }
 
+/* Set some basic styles for the body */
 body {
   margin: 0;
   background-color: #b7bedd;
@@ -15,7 +18,7 @@ body {
 }
 
 /* Header styles */
-
+/* Set the styles for the header section of the page */
 header {
   background-color: #292F36;
   padding: 0.5rem;
@@ -23,6 +26,7 @@ header {
   font-size: 1.2rem;
 }
 
+/* Set the styles for links in the header */
 header a {
   color: #F6F6F6;
   text-decoration: none;
@@ -32,20 +36,18 @@ header a {
   align-items: center;
 }
 
+/* Set the styles for the icon in links in the header */
 header a svg {
   margin-right: 0.5rem;
 }
 
-header a {
-  color: #F6F6F6;
-  text-decoration: none;
-}
-
+/* Set the hover styles for links in the header */
 header a:hover {
   color: #B2B2B2;
 }
 
-.top-text{
+/* Set the styles for the text in the top section of the page */
+.top-text {
   flex-direction: column;
   padding-left: 15%;
   padding-right: 15%;
@@ -56,6 +58,7 @@ header a:hover {
 
 
 /* Main content styles */
+/* Set the styles for the main container that holds the content of the page */
 .main-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -66,21 +69,25 @@ header a:hover {
   padding: 2rem;
 }
 
-.middle{
+/* Set the styles for the middle section of the page */
+.middle {
   display: flex;
   flex-direction: row;
 }
 
+/* Set the styles for heading elements */
 h1, h2, h3 {
   font-weight: bold;
   color: #292F36;
 }
 
+/* Set the styles for paragraph elements */
 p {
   line-height: 1.5;
 }
 
 /* Search box styles */
+/* Set the styles for the search box */
 .search-box {
   background-color: #FFF;
   padding: 2rem;
@@ -90,12 +97,14 @@ p {
   margin-right: 2rem;
 }
 
+/* Set the styles for the label in the search box */
 .search-box label {
   display: block;
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
 
+/* Set the styles for the input elements in the search box */
 .search-box input[type="text"],
 .search-box select {
   width: 100%;
@@ -105,6 +114,7 @@ p {
   margin-bottom: 1rem;
 }
 
+/* Set the styles for the search button in the search box */
 #search-btn {
   background-color: #292F36;
   color: #FFF;
@@ -148,12 +158,48 @@ p {
   cursor: pointer;
 }
 
+/* Styles for search button when hovering */
+#search-btn:hover {
+  background-color: #B2B2B2;
+}
+
+/* Styles for chart container */
+.chart-container {
+  display: flex;
+  background-color: #FFF;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  min-height: 300px;
+  margin-bottom: 2rem;
+}
+
+/* Styles for download box */
+.download-box {
+  background-color: #292F36;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+/* Styles for download button */
+#download-btn {
+  background-color: #292F36;
+  color: #FFF;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Styles for download button when hovering */
 #download-btn:hover {
   background-color: #D4D4D4;
 }
 
-/* Footer styles */
-/* Footer styles */
+/* Styles for footer */
 footer {
   background-color: #292F36;
   color: #FFF;
@@ -169,21 +215,24 @@ footer {
   align-items: center;
 }
 
+/* Styles for footer paragraph */
 footer p {
   margin: 0;
 }
 
+/* Styles for footer link */
 footer a {
   color: #FFF;
   text-decoration: none;
   font-weight: 700;
 }
 
+/* Styles for footer link when hovering */
 footer a:hover {
   color: #B2B2B2;
 }
-/* Responsive design */
 
+/* Responsive design for screen widths up to 768px */
 @media screen and (max-width: 768px) {
   h1 {
     font-size: 2.5rem;
@@ -203,16 +252,20 @@ footer a:hover {
     margin-bottom: 1rem;
   }
   
+  /* Styles for search box input and select elements */
   .search-box input[type="text"], .search-box select {
     width: 100%;
   }
   
+  /* Styles for search box button */
   .search-box button {
     width: 100%;
   }
 }
 
+/* Responsive design for screen widths up to 768px */
 @media screen and (max-width: 768px) {
+  /* Styles for chart container */
   .chart-container {
     width: 100%;
   }

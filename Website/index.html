@@ -10,23 +10,23 @@
   <title>Data Extraction Tool</title>
   
   <!-- JavaScript scripts -->
-  <script src="script.js" defer></script>
-  <script src="lib/moment/moment.lib.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js" defer></script> <!-- JavaScript script file -->
+  <script src="lib/moment/moment.lib.js"></script> <!-- Moment.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js library -->
   
   <!-- CSS stylesheet -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css"> <!-- CSS stylesheet file -->
   
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet"> <!-- Google Fonts link -->
 </head>
 <body>
   <!-- Header section -->
   <header>
     <nav>
       <ul>
-        <li><a href="https://github.com/GuntherChung/INST490-AQ-Data-Extraction-Tool/blob/main/README.md">Read_Me</a></li>
-        <li><a href="https://github.com/GuntherChung/INST490-AQ-Data-Extraction-Tool">Repository</a></li>
+        <li><a href="https://github.com/GuntherChung/INST490-AQ-Data-Extraction-Tool/blob/main/README.md">Read_Me</a></li> <!-- Link to README file in repository -->
+        <li><a href="https://github.com/GuntherChung/INST490-AQ-Data-Extraction-Tool">Repository</a></li> <!-- Link to repository -->
       </ul>
     </nav>
   </header>
@@ -45,13 +45,15 @@
     <div class="middle">
       <!-- Search box box section -->
       <div class="search-box">
+        <!-- input start date section -->
         <label for="start-date">Start Date:</label>
         <input type="text" id="start-date" name="start-date" placeholder="MM/DD/YYYY">
+        <!-- input start date section -->
         <label for="end-date">End Date:</label>
         <input type="text" id="end-date" name="end-date" placeholder="MM/DD/YYYY">
 
         <label for="location">Location:</label>
-
+        <!-- drop down box for possible sensors -->
         <select id="location" name="location">
           <option value="">Select a location</option>
           <option value="133730#11.74">Union Bethel AME</option>
@@ -67,18 +69,17 @@
           <option value="102884#13.76">Charles Flowers HS</option>
         </select>
               
-
-        <button id="search-btn">Search</button>
-        <button id="download-btn">Download CSV</button>
+        <button id="search-btn">Search</button> <!-- Button to initiate search -->
+        <button id="download-btn">Download CSV</button> <!-- Button to download search results as CSV file -->
 
       </div>
 
       <!-- Chart section -->
       <div class="chart-container">
-        <canvas id="myChart"></canvas>
+        <canvas id="myChart"></canvas> <!-- HTML canvas element for Chart.js to create chart -->
       </div>
       
-  </div>
+    </div>
 
   </main>
   
