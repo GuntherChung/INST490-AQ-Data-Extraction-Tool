@@ -91,7 +91,7 @@ link.style.visibility = "hidden";
 document.body.appendChild(link);
 ```
 -------------------------------------
-### Things left to do
+## Things left to do
 Our initial goals were
 * let the user input values for 
     * start date
