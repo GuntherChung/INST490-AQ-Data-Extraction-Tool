@@ -7,12 +7,12 @@ This JavaScript code is a client-side application that gets data from an externa
 ## Setup
 The first line of code sets the API key to access the PurpleAir API. Replace the value of the X-API-Key header with your own API key.
 
-```shell
+```js
 const headers = { "X-API-Key": "1234678-1234-1234-1234-42010A800007" }; // replace with your actual API key
 ```
 ## Location Selection
 The searchBtn, locationSelect, and downloadBtn variables reference the corresponding elements in the HTML document.
-
+```js
 const searchBtn = document.getElementById("search-btn");
 const locationSelect = document.getElementById("location");
 const downloadBtn = document.getElementById("download-btn");
@@ -23,7 +23,7 @@ searchBtn.addEventListener("click", function() {
   selectedLocation = locationSelect.value;
   console.log(selectedLocation);
 });
-
+```
 ## Date Selection
 The startDateInput and endDateInput variables reference the date input elements in the HTML document. The minimum date for the start date input is set to 30 days ago from the current date.
 
