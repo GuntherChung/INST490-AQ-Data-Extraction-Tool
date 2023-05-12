@@ -67,16 +67,16 @@ searchBtn.addEventListener("click", async function() {
   sensorData = await getHistoricalData(startDateInput.value, endDateInput.value);
   downloadBtn.disabled = false;
 });
-
-downloadBtn.addEventListener("click", function() {
-  const csv = createCsv(sensorData);
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const link = document.createElement("a");
-  const url = URL.createObjectURL(blob);
-  link.setAttribute("href", url);
-  link.setAttribute("download", "data.csv");
-  link.style.visibility = "hidden";
-  document.body.appendChild(link);
- 
+|--------------------------------------------------------------------------------|
+|    downloadBtn.addEventListener("click", function() {                          |
+|    const csv = createCsv(sensorData);                                          |
+|    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });          |
+|    const link = document.createElement("a");                                   |
+|    const url = URL.createObjectURL(blob);                                      |
+|    link.setAttribute("href", url);                                             |
+|    link.setAttribute("download", "data.csv");                                  |
+|    link.style.visibility = "hidden";                                           |
+|    document.body.appendChild(link);                                            |
+|--------------------------------------------------------------------------------| 
 
 ## Things left to do
