@@ -1,4 +1,4 @@
-const headers = { "X-API-Key": "C7AF49F7-C3F6-11ED-B6F4-42010A800007" }; // replace with your actual API key
+const headers = { "X-API-Key": "1234678-1234-1234-1234-42010A800007" }; // replace with your actual API key
 
 // ---- LOCATION --- //
 
