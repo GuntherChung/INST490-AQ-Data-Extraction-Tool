@@ -67,21 +67,21 @@ searchButton.addEventListener("click", async () => {
   // do something with the data
 });
 
-// add event listener to the search button
+// adds event listener to the search button
 searchBtn.addEventListener("click", async function() {
-  // get the value of the selected location and assign it to the global variable
+  // gets the value of the selected location and assign it to the global variable
   selectedLocation = locationSelect.value;
 
-  // get the historical data for the selected location and dates
+  // gets the historical data for the selected location and dates
   sensorData = await getHistoricalData(startDateInput.value, endDateInput.value);
 
-  // enable the download button
+  // enables the download button
   downloadBtn.disabled = false;
 });
 
-// add event listener to the download button
+// adds event listener to the download button
 downloadBtn.addEventListener("click", function() {
-  // create a CSV file and download it
+  // creates a CSV file and download it
   const csv = createCsv(sensorData);
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   const link = document.createElement("a");
@@ -95,7 +95,7 @@ downloadBtn.addEventListener("click", function() {
   URL.revokeObjectURL(url);
 });
 
-// ------ HELPER FUNCTIONS ---- //
+// ------ HELPER FUNCTIONS For Download Button---- //
 
 // create a CSV string from the sensor data
 function createCsv(sensorData) {
