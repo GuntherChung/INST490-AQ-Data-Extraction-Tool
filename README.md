@@ -1,6 +1,6 @@
 # INST490-AQ-Data-Extraction-Tool
 
-[Visit our website](./Website/index.html)
+[Visit our website](https://guntherchung.github.io/INST490-AQ-Data-Extraction-Tool/Website/index.html)
 
 This JavaScript code is a client-side application that gets data from an external API, creates a CSV file, generates a graph with the data pulled, and downloads it at the click of a button. 
 The application allows the user to select a location and a date range, then retrieves historical data for that location and period from the PurpleAir API. The code is well-commented and follows best practices, making it easy to read and understand.
